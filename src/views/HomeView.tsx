@@ -56,7 +56,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
           playsInline 
           className="absolute inset-0 w-full h-full object-cover z-0"
         >
-          <source src="/assets/public/hero.mp4" type="video/mp4" />
+          <source src="/public/assets/hero.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-[#180F29]/80 z-0"></div>
         <AuroraStarfield />
@@ -414,7 +414,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               className="relative w-full max-w-md h-[420px] overflow-hidden border-2 border-[#C59CE4]/50 shadow-[0_20px_60px_rgba(197,156,228,0.25)] group bg-[#241A38]"
             >
               <img
-                src="/assets/public/images/story.jpg"
+                src="/public/assets/images/story.jpg"
                 alt="قصة خزامى وتجارب الفعاليات"
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
