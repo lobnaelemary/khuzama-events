@@ -1,0 +1,6 @@
+{
+  "name": "Khuzama Events - خزامى للفعاليات",
+  "description": "منصة تسويقية واستراتيجية لعرض أعمال شركة خزامى وتسهيل تواصل العملاء عبر واتساب لتنفيذ الفعاليات",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
