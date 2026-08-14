@@ -11,7 +11,7 @@ export const KhuzamaLogo: React.FC<KhuzamaLogoProps> = ({
   className = '',
   variant = 'full',
   size = 'md',
-  logoUrl = '/public/assets/images/logo.png' // حطي لينك صورتك هنا كقيمة افتراضية أو ابعتيه من المكون مباشرة
+  logoUrl = '/public/assets/img/logo.png' // حطي لينك صورتك هنا كقيمة افتراضية أو ابعتيه من المكون مباشرة
 }) => {
   const sizeClasses = {
     sm: 'h-8',
