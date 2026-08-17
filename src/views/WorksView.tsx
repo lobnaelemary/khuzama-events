@@ -277,8 +277,27 @@ export const WorksView: React.FC<WorksViewProps> = ({
     openWhatsAppDirect(url);
   };
 
-  const curtainBgStyle = {
-    backgroundImage: `url(data:image/jpeg;base64,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)`,
+  // ==========================================
+  // مخصص لصور الستائر والمثلث العلوي (من مجلد assets المحلي)
+  // ==========================================
+
+  // 1. ستايل المثلث العلوي (حطي اسم صورتك مكان top-triangle.jpg)
+  const topValanceStyle = {
+    backgroundImage: ` url('/assets/img/top-triangle.jpg')`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  };
+
+  // 2. ستايل الستارة اليسار (حطي اسم صورتك مكان left-curtain.jpg)
+  const leftCurtainStyle = {
+    backgroundImage: `url('/assets/img/right (2).jpeg')`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  };
+
+  // 3. ستايل الستارة اليمين (حطي اسم صورتك مكان right-curtain.jpg)
+  const rightCurtainStyle = {
+    backgroundImage: `linear-gradient(to left, rgba(24, 15, 41, 0.2), rgba(24, 15, 41, 0.6)), url('/assets/img/right (1).jpeg')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   };
@@ -291,9 +310,6 @@ export const WorksView: React.FC<WorksViewProps> = ({
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#C59CE4]/25 via-transparent to-transparent pointer-events-none"></div>
 
         <div className="max-w-5xl mx-auto text-center space-y-6 relative z-10">
-          
-
-          {/* العنوان الرئيسي بمعايير الديزاين سيستم الموحدة */}
           <h1 ref={titleRef} className="font-heading font-black text-4xl sm:text-7xl text-white tracking-tight leading-[1.1]">
             من أرض المشروع… لقطات من التجربة.
           </h1>
@@ -455,7 +471,6 @@ export const WorksView: React.FC<WorksViewProps> = ({
                     <h3 className="font-heading font-black text-2xl sm:text-3xl text-white tracking-wide">
                       {media.title}
                     </h3>
-                    
                   </div>
                 </div>
               );
@@ -474,35 +489,37 @@ export const WorksView: React.FC<WorksViewProps> = ({
           </div>
         </div>
 
-        {/* --- THEATRICAL CURTAINS LAYER (بدون الجزء البنفسجي، العنوان غامق وواضح) --- */}
+        {/* --- المثلث العلوي (Top Valance) --- */}
         <div 
           ref={topValanceRef}
           className="absolute top-0 inset-x-0 h-36 sm:h-44 z-30 border-b-4 border-[#C59CE4]/40 flex items-center justify-center pt-10 shadow-lg"
           style={{ 
-            ...curtainBgStyle,
+            ...topValanceStyle,
             clipPath: 'polygon(0 0, 100% 0, 100% 75%, 50% 100%, 0 75%)' 
           }}
         >
           <div className="absolute inset-0 bg-black/10"></div>
-          <div className="text-[#241A38] font-heading font-black text-sm sm:text-base tracking-[0.3em] uppercase opacity-100 mt-[-15px] relative z-10 drop-shadow-sm">
+          <div className="text-white font-heading font-black text-sm sm:text-base tracking-[0.3em] uppercase opacity-100 mt-[-15px] relative z-10 drop-shadow-md">
             خزامى للفعاليات
           </div>
         </div>
 
+        {/* --- الستارة اليسار (Left Curtain) --- */}
         <div 
           ref={leftCurtainRef} 
           className="absolute inset-y-0 left-0 w-1/2 z-20 flex items-center justify-end overflow-hidden shadow-2xl"
-          style={curtainBgStyle}
+          style={leftCurtainStyle}
         >
-          <div className="absolute inset-0 bg-[#180F29]/30"></div>
+          <div className="absolute inset-0 bg-[#180F29]/20"></div>
         </div>
 
+        {/* --- الستارة اليمين (Right Curtain) --- */}
         <div 
           ref={rightCurtainRef} 
           className="absolute inset-y-0 right-0 w-1/2 z-20 flex items-center justify-start overflow-hidden shadow-2xl"
-          style={curtainBgStyle}
+          style={rightCurtainStyle}
         >
-          <div className="absolute inset-0 bg-[#180F29]/30"></div>
+          <div className="absolute inset-0 bg-[#180F29]/20"></div>
         </div>
 
         <div 
@@ -510,7 +527,6 @@ export const WorksView: React.FC<WorksViewProps> = ({
           className="absolute inset-0 z-40 flex flex-col items-center justify-center text-center px-4 pointer-events-none pt-24"
         >
           <div className="max-w-3xl space-y-4 p-8 rounded-3xl bg-[#180F29]/85 backdrop-blur-md border border-[#C59CE4]/30 shadow-2xl">
-            
             <h2 className="font-heading font-black text-3xl sm:text-5xl text-white tracking-tight leading-relaxed">
               تفاصيل قد لا يراها الضيف… لكنها تصنع التجربة.
             </h2>
@@ -521,7 +537,6 @@ export const WorksView: React.FC<WorksViewProps> = ({
           ref={curtainClosingTitleRef}
           className="absolute inset-0 z-40 flex flex-col items-center justify-center text-center px-4 pointer-events-none opacity-0 pt-24"
         >
-          {/* تم تعديل الحاوية هنا لتأخذ max-w-5xl وتماثل البانر الختامي في باقي الصفحات تماماً */}
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full pointer-events-auto">
             <div className="bg-[#180F29] rounded-3xl p-8 sm:p-12 text-center text-white border border-[#C59CE4]/30 shadow-2xl khuzama-pattern-dark relative overflow-hidden space-y-6">
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#C59CE4]/10 via-transparent to-transparent pointer-events-none"></div>
