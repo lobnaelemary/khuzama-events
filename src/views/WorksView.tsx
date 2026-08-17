@@ -273,7 +273,7 @@ export const WorksView: React.FC<WorksViewProps> = ({
   };
 
   const rightCurtainStyle = {
-    backgroundImage: `linear-gradient(to left, rgba(24, 15, 41, 0.2), rgba(24, 15, 41, 0.6)), url('/assets/img/right (1).jpeg')`,
+    backgroundImage: `url('/assets/img/right (1).jpeg')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   };
@@ -408,7 +408,6 @@ export const WorksView: React.FC<WorksViewProps> = ({
         ref={stageSectionRef} 
         className="bg-[#F8F7F4] h-screen w-full relative overflow-hidden flex flex-col justify-center items-center m-0 p-0 border-0"
       >
-        {/* العنوان مرفوع لفوق شوية ويختفي مع السكرول */}
         <div ref={curtainTitleRef} className="absolute top-[18vh] inset-x-0 z-40 text-center px-4">
            <h2 className="font-heading font-black text-3xl sm:text-5xl text-white tracking-tight drop-shadow-lg">
              تفاصيل قد لا يراها الضيف… لكنها تصنع التجربة.
@@ -491,25 +490,26 @@ export const WorksView: React.FC<WorksViewProps> = ({
         </div>
       </section>
 
-      {/* SECTION 5: CTA (خلفية فاتحة وكارت غامق زي باقي الصفحات) */}
+      {/* SECTION 5: CTA (مقاس متناسق تماماً مع الهيدر وكارت غامق فاخر) */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-[#F8F7F4]">
-        <div className="bg-[#180F29] rounded-[40px] p-12 sm:p-16 text-center text-white shadow-2xl relative overflow-hidden khuzama-pattern-dark">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#C59CE4]/10 via-transparent to-transparent pointer-events-none"></div>
+        <div className="bg-[#180F29] rounded-[36px] p-8 sm:p-14 text-center text-white shadow-2xl relative overflow-hidden khuzama-pattern-dark border border-[#C59CE4]/30">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#C59CE4]/20 via-transparent to-transparent pointer-events-none"></div>
           
           <div className="relative z-10 max-w-xl mx-auto space-y-4">
-            <h2 className="font-heading font-black text-3xl sm:text-4xl text-white tracking-tight leading-relaxed">
+            <h2 className="font-heading font-black text-2xl sm:text-4xl text-white tracking-tight leading-relaxed">
               من كواليس الميدان إلى منصة النجاح
             </h2>
-            <p className="text-sm text-purple-100/80 leading-relaxed font-sans">
+            <p className="text-xs sm:text-sm text-purple-100/90 leading-relaxed font-sans">
               نصنع لك تجربة استثنائية تبدأ بمحادثة بسيطة وتستمر في الذاكرة
             </p>
           </div>
+
           <div className="relative z-10 pt-4">
             <button
               onClick={handleWorksWhatsApp}
-              className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-[#C59CE4] text-[#180F29] font-bold text-sm sm:text-base shadow-xl hover:bg-white transition-all cursor-pointer"
+              className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-[#533B78] via-[#432E61] to-[#3D295C] text-white font-bold text-sm sm:text-base border border-[#C59CE4]/40 shadow-xl hover:border-[#C59CE4] hover:shadow-purple-900/50 transition-all cursor-pointer"
             >
-              <MessageCircle className="w-5 h-5" />
+              <MessageCircle className="w-5 h-5 text-[#C59CE4]" />
               <span className="font-heading">ابدأ تجهيز فعاليتك</span>
             </button>
           </div>
