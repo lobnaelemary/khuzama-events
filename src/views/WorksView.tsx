@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { PageRoute } from '../types';
-import { Sparkles, MessageCircle, ArrowLeft, Play, MapPin, Building, CheckCircle } from 'lucide-react';
+import { Sparkles, MessageCircle, ArrowLeft, Play, MapPin, Building, CheckCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { openWhatsAppDirect, KHUZAMA_WHATSAPP_NUMBER } from '../utils/whatsapp';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { motion, AnimatePresence } from 'framer-motion';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -43,17 +44,13 @@ export const WorksView: React.FC<WorksViewProps> = ({
   const titleRef = useRef<HTMLHeadingElement>(null);
   const perspectiveGridRef = useRef<HTMLDivElement>(null);
   
-  // Curtain & Stage Refs
   const stageSectionRef = useRef<HTMLDivElement>(null);
   const leftCurtainRef = useRef<HTMLDivElement>(null);
   const rightCurtainRef = useRef<HTMLDivElement>(null);
-  const topValanceRef = useRef<HTMLDivElement>(null);
   const curtainTitleRef = useRef<HTMLDivElement>(null);
-  const curtainClosingTitleRef = useRef<HTMLDivElement>(null); 
   const stageContentRef = useRef<HTMLDivElement>(null);
   const frameWrapperRef = useRef<HTMLDivElement>(null);
 
-  // Hero media loop list
   const [heroMediaIndex, setHeroMediaIndex] = useState<number>(0);
   const heroMediaList = [
     { type: 'image', url: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1400&q=80' },
@@ -127,7 +124,7 @@ export const WorksView: React.FC<WorksViewProps> = ({
         );
       }
 
-      // 3. Theatrical Stage Curtain & Scroll-Driven Image Slideshow & Re-closing
+      // 3. Theatrical Stage Curtain & Scroll-Driven Image Slideshow
       if (stageSectionRef.current && leftCurtainRef.current && rightCurtainRef.current) {
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -151,10 +148,9 @@ export const WorksView: React.FC<WorksViewProps> = ({
           }
         });
 
-        tl.to(curtainTitleRef.current, { opacity: 0, scale: 0.9, duration: 0.05 }, 0)
-          .to(leftCurtainRef.current, { xPercent: -90, ease: 'power2.inOut' }, 0.05)
-          .to(rightCurtainRef.current, { xPercent: 90, ease: 'power2.inOut' }, 0.05)
-          .to(topValanceRef.current, { yPercent: -100, opacity: 0, ease: 'power2.inOut' }, 0.05)
+        tl.to(curtainTitleRef.current, { opacity: 0, scale: 0.9, y: -30, duration: 0.08 }, 0)
+          .to(leftCurtainRef.current, { xPercent: -100, ease: 'power2.inOut' }, 0.05)
+          .to(rightCurtainRef.current, { xPercent: 100, ease: 'power2.inOut' }, 0.05)
           .fromTo(
             stageContentRef.current,
             { scale: 0.4, opacity: 0, z: -600 },
@@ -164,14 +160,7 @@ export const WorksView: React.FC<WorksViewProps> = ({
           .to(stageContentRef.current, { opacity: 1, duration: 0.4 }, 0.35)
           .to(stageContentRef.current, { scale: 0.5, opacity: 0, duration: 0.15 }, 0.8)
           .to(leftCurtainRef.current, { xPercent: 0, ease: 'power2.inOut' }, 0.85)
-          .to(rightCurtainRef.current, { xPercent: 0, ease: 'power2.inOut' }, 0.85)
-          .to(topValanceRef.current, { yPercent: 0, opacity: 1, ease: 'power2.inOut' }, 0.85)
-          .fromTo(
-            curtainClosingTitleRef.current,
-            { opacity: 0, scale: 0.9 },
-            { opacity: 1, scale: 1, duration: 0.15 },
-            0.9
-          );
+          .to(rightCurtainRef.current, { xPercent: 0, ease: 'power2.inOut' }, 0.85);
       }
     }, containerRef);
 
@@ -277,25 +266,12 @@ export const WorksView: React.FC<WorksViewProps> = ({
     openWhatsAppDirect(url);
   };
 
-  // ==========================================
-  // مخصص لصور الستائر والمثلث العلوي (من مجلد assets المحلي)
-  // ==========================================
-
-  // 1. ستايل المثلث العلوي (حطي اسم صورتك مكان top-triangle.jpg)
-  const topValanceStyle = {
-    backgroundImage: ` url('/assets/img/top-triangle.jpg')`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  };
-
-  // 2. ستايل الستارة اليسار (حطي اسم صورتك مكان left-curtain.jpg)
   const leftCurtainStyle = {
     backgroundImage: `url('/assets/img/right (2).jpeg')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   };
 
-  // 3. ستايل الستارة اليمين (حطي اسم صورتك مكان right-curtain.jpg)
   const rightCurtainStyle = {
     backgroundImage: `linear-gradient(to left, rgba(24, 15, 41, 0.2), rgba(24, 15, 41, 0.6)), url('/assets/img/right (1).jpeg')`,
     backgroundSize: 'cover',
@@ -432,6 +408,13 @@ export const WorksView: React.FC<WorksViewProps> = ({
         ref={stageSectionRef} 
         className="bg-[#F8F7F4] h-screen w-full relative overflow-hidden flex flex-col justify-center items-center m-0 p-0 border-0"
       >
+        {/* العنوان مرفوع لفوق شوية ويختفي مع السكرول */}
+        <div ref={curtainTitleRef} className="absolute top-[18vh] inset-x-0 z-40 text-center px-4">
+           <h2 className="font-heading font-black text-3xl sm:text-5xl text-white tracking-tight drop-shadow-lg">
+             تفاصيل قد لا يراها الضيف… لكنها تصنع التجربة.
+           </h2>
+        </div>
+
         <div 
           ref={stageContentRef} 
           className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 relative z-10 w-full opacity-0 pt-4 text-center"
@@ -489,22 +472,7 @@ export const WorksView: React.FC<WorksViewProps> = ({
           </div>
         </div>
 
-        {/* --- المثلث العلوي (Top Valance) --- */}
-        <div 
-          ref={topValanceRef}
-          className="absolute top-0 inset-x-0 h-36 sm:h-44 z-30 border-b-4 border-[#C59CE4]/40 flex items-center justify-center pt-10 shadow-lg"
-          style={{ 
-            ...topValanceStyle,
-            clipPath: 'polygon(0 0, 100% 0, 100% 75%, 50% 100%, 0 75%)' 
-          }}
-        >
-          <div className="absolute inset-0 bg-black/10"></div>
-          <div className="text-white font-heading font-black text-sm sm:text-base tracking-[0.3em] uppercase opacity-100 mt-[-15px] relative z-10 drop-shadow-md">
-            خزامى للفعاليات
-          </div>
-        </div>
-
-        {/* --- الستارة اليسار (Left Curtain) --- */}
+        {/* --- الستارة اليسار --- */}
         <div 
           ref={leftCurtainRef} 
           className="absolute inset-y-0 left-0 w-1/2 z-20 flex items-center justify-end overflow-hidden shadow-2xl"
@@ -513,7 +481,7 @@ export const WorksView: React.FC<WorksViewProps> = ({
           <div className="absolute inset-0 bg-[#180F29]/20"></div>
         </div>
 
-        {/* --- الستارة اليمين (Right Curtain) --- */}
+        {/* --- الستارة اليمين --- */}
         <div 
           ref={rightCurtainRef} 
           className="absolute inset-y-0 right-0 w-1/2 z-20 flex items-center justify-start overflow-hidden shadow-2xl"
@@ -521,47 +489,31 @@ export const WorksView: React.FC<WorksViewProps> = ({
         >
           <div className="absolute inset-0 bg-[#180F29]/20"></div>
         </div>
+      </section>
 
-        <div 
-          ref={curtainTitleRef}
-          className="absolute inset-0 z-40 flex flex-col items-center justify-center text-center px-4 pointer-events-none pt-24"
-        >
-          <div className="max-w-3xl space-y-4 p-8 rounded-3xl bg-[#180F29]/85 backdrop-blur-md border border-[#C59CE4]/30 shadow-2xl">
-            <h2 className="font-heading font-black text-3xl sm:text-5xl text-white tracking-tight leading-relaxed">
-              تفاصيل قد لا يراها الضيف… لكنها تصنع التجربة.
+      {/* SECTION 5: CTA (خلفية فاتحة وكارت غامق زي باقي الصفحات) */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-[#F8F7F4]">
+        <div className="bg-[#180F29] rounded-[40px] p-12 sm:p-16 text-center text-white shadow-2xl relative overflow-hidden khuzama-pattern-dark">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#C59CE4]/10 via-transparent to-transparent pointer-events-none"></div>
+          
+          <div className="relative z-10 max-w-xl mx-auto space-y-4">
+            <h2 className="font-heading font-black text-3xl sm:text-4xl text-white tracking-tight leading-relaxed">
+              من كواليس الميدان إلى منصة النجاح
             </h2>
+            <p className="text-sm text-purple-100/80 leading-relaxed font-sans">
+              نصنع لك تجربة استثنائية تبدأ بمحادثة بسيطة وتستمر في الذاكرة
+            </p>
+          </div>
+          <div className="relative z-10 pt-4">
+            <button
+              onClick={handleWorksWhatsApp}
+              className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-[#C59CE4] text-[#180F29] font-bold text-sm sm:text-base shadow-xl hover:bg-white transition-all cursor-pointer"
+            >
+              <MessageCircle className="w-5 h-5" />
+              <span className="font-heading">ابدأ تجهيز فعاليتك</span>
+            </button>
           </div>
         </div>
-
-        <div 
-          ref={curtainClosingTitleRef}
-          className="absolute inset-0 z-40 flex flex-col items-center justify-center text-center px-4 pointer-events-none opacity-0 pt-24"
-        >
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full pointer-events-auto">
-            <div className="bg-[#180F29] rounded-3xl p-8 sm:p-12 text-center text-white border border-[#C59CE4]/30 shadow-2xl khuzama-pattern-dark relative overflow-hidden space-y-6">
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#C59CE4]/10 via-transparent to-transparent pointer-events-none"></div>
-              
-              <div className="relative z-10 max-w-xl mx-auto space-y-3">
-                <h2 className="font-heading font-black text-2xl sm:text-3xl text-white tracking-tight leading-relaxed">
-                  من كواليس الميدان إلى منصة النجاح
-                </h2>
-                <p className="text-xs sm:text-sm text-purple-100/80 leading-relaxed font-sans">
-                  نصنع لك تجربة استثنائية تبدأ بمحادثة بسيطة وتستمر في الذاكرة
-                </p>
-              </div>
-              <div className="relative z-10 pt-2">
-                <button
-                  onClick={handleWorksWhatsApp}
-                  className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-[#533B78] via-[#432E61] to-[#3D295C] text-white font-bold text-sm sm:text-base border border-[#C59CE4]/40 shadow-xl hover:border-[#C59CE4] hover:shadow-purple-900/50 transition-all cursor-pointer"
-                >
-                  <MessageCircle className="w-5 h-5 text-[#C59CE4]" />
-                  <span className="font-heading">ابدأ تجهيز فعاليتك</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
       </section>
 
     </div>
