@@ -3,6 +3,7 @@ import { PageRoute, Project } from './types';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { WhatsAppModal } from './components/WhatsAppModal';
+import { WhatsAppFloat } from './components/WhatsAppFloat'; // استيراد أيقونة الواتساب العائمة
 import { HomeView } from './views/HomeView';
 import { WorksView } from './views/WorksView';
 import { ProjectDetailView } from './views/ProjectDetailView';
@@ -38,7 +39,7 @@ export default function App() {
 
   return (
     /* إرجاع الخلفية العامة للوضع الأصلي المناسب لصفحة التواصل وباقي الصفحات */
-    <div className="min-h-screen flex flex-col bg-[#FBF9F6] text-[#1A181E] dir-rtl font-sans selection:bg-[#3D295C] selection:text-white">
+    <div className="min-h-screen flex flex-col bg-[#FBF9F6] text-[#1A181E] dir-rtl font-sans selection:bg-[#3D295C] selection:text-white relative">
       {/* Sticky Top Navigation */}
       <Navbar
         activeRoute={activeRoute}
@@ -119,6 +120,9 @@ export default function App() {
         onClose={() => setIsWhatsAppModalOpen(false)}
         presetProjectTitle={whatsAppPresetTitle}
       />
+
+      {/* Fixed Floating WhatsApp Button (ثابت في كل الصفحات تحت على الشمال) */}
+      <WhatsAppFloat />
     </div>
   );
 }
