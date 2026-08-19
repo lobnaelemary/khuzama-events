@@ -225,8 +225,6 @@ export const FilmStripReel: React.FC<FilmStripReelProps> = ({
 
             <div className="absolute inset-0 bg-gradient-to-t from-[#180F29] via-transparent to-black/30"></div>
 
-            
-
             <div className="absolute bottom-4 right-4 left-4 flex justify-between items-end text-white">
               <div>
                 <span className="text-xs text-[#C59CE4] font-bold block">{activeProject.categoryLabel}</span>
@@ -304,24 +302,44 @@ export const FilmStripReel: React.FC<FilmStripReelProps> = ({
   );
 };
 
-/* 5. Infinite Marquee Component */
+/* 5. Infinite Marquee Component (شريط متحرك بخلفية موف أغمق شوية ومريحة جداً) */
+interface MarqueeItem {
+  name: string;
+  logo?: string;
+}
+
 interface InfiniteMarqueeProps {
-  items: string[];
+  items: (string | MarqueeItem)[];
 }
 
 export const InfiniteMarquee: React.FC<InfiniteMarqueeProps> = ({ items }) => {
   return (
-    <div className="overflow-hidden whitespace-nowrap py-3 bg-[#231738] border-y border-[#C59CE4]/30 relative" dir="ltr">
-      <div className="animate-ticker-reverse flex items-center gap-8">
-        {[...items, ...items, ...items].map((item, index) => (
-          <div
-            key={index}
-            className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/5 border border-white/10 text-xs sm:text-sm text-white/90 font-medium hover:border-[#C59CE4] transition-colors"
-            dir="rtl"
-          >
-            <span>{item}</span>
-          </div>
-        ))}
+    <div className="overflow-hidden whitespace-nowrap py-6 bg-[#E5D5F2] border-y border-[#C59CE4]/40 relative shadow-xs" dir="ltr">
+      <div className="animate-ticker-reverse flex items-center gap-16">
+        {[...items, ...items, ...items].map((item, index) => {
+          const isObject = typeof item === 'object' && item !== null;
+          const name = isObject ? (item as MarqueeItem).name : (item as string);
+          const logo = isObject ? (item as MarqueeItem).logo : undefined;
+
+          return (
+            <div
+              key={index}
+              className="inline-flex items-center justify-center px-4 min-w-[160px]"
+              dir="rtl"
+            >
+              {logo ? (
+                <img 
+                  src={logo} 
+                  alt={name} 
+                  className="max-h-14 w-auto object-contain opacity-95 hover:opacity-100 transition-opacity"
+                  referrerPolicy="no-referrer"
+                />
+              ) : (
+                <span className="font-thamanya font-bold text-lg text-[#3D295C] tracking-wide">{name}</span>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

@@ -1,12 +1,12 @@
-/* استيراد الخطوط معاً */
-@import url('https://fonts.googleapis.com/css2?family=Marhey:wght@300;400;500;600;700&family=Cairo:wght@200;300;400;600;700&display=swap');
+/* استيراد خط Zain مع Almarai من Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Zain:wght@300;400;700;800;900&display=swap');
 @import "tailwindcss";
 
 /* تعريف المتغيرات العامة لنظام الألوان والخطوط */
 :root {
-  --font-heading: 'Marhey', system-ui, sans-serif;
-  --font-body: 'Marhey', system-ui, sans-serif;
-  --font-thamanya: 'Marhey', system-ui, sans-serif;
+  --font-heading: 'Zain', system-ui, sans-serif; /* العناوين بخط Zain الجذاب */
+  --font-body: 'Almarai', system-ui, sans-serif;    /* النصوص والباراجرافات بخط Almarai المريح */
+  --font-thamanya: 'Zain', system-ui, sans-serif;
 
   --color-khuzama-purple: #3D295C;
   --color-khuzama-dark: #231738;
@@ -21,7 +21,18 @@ body {
   background-color: var(--color-khuzama-bg);
   color: var(--color-khuzama-purple);
   overflow-x: hidden;
+  font-size: 1.125rem;
+  line-height: 1.8;
 }
+
+/* تكبير أي نص وصفي أو باراجراف موجود جوه كروت الموقع بشكل عام */
+.card p, 
+div[class*="rounded"] p, 
+div[class*="shadow"] p {
+  font-size: 1rem !important; /* حجم أكبر وواضح (تقدري تخليه 1.2rem لو حباه أكبر) */
+  line-height: 1.8 !important;   /* تباعد مريح جداً للقراءة */
+}
+
 
 h1, h2, h3, h4, h5, h6, .font-heading {
   font-family: var(--font-heading);

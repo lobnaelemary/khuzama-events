@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { PageRoute } from '../types';
-import { Sparkles, MessageCircle, ArrowLeft, Play, MapPin, Building, CheckCircle, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Sparkles, MessageCircle, ArrowLeft, Play, MapPin, Building, CheckCircle, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
 import { openWhatsAppDirect, KHUZAMA_WHATSAPP_NUMBER } from '../utils/whatsapp';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -47,6 +47,9 @@ export const WorksView: React.FC<WorksViewProps> = ({
   const stageSectionRef = useRef<HTMLDivElement>(null);
   const leftCurtainRef = useRef<HTMLDivElement>(null);
   const rightCurtainRef = useRef<HTMLDivElement>(null);
+  const leftCurtainMobileRef = useRef<HTMLDivElement>(null);
+  const rightCurtainMobileRef = useRef<HTMLDivElement>(null);
+  
   const curtainTitleRef = useRef<HTMLDivElement>(null);
   const stageContentRef = useRef<HTMLDivElement>(null);
   const frameWrapperRef = useRef<HTMLDivElement>(null);
@@ -79,17 +82,17 @@ export const WorksView: React.FC<WorksViewProps> = ({
     {
       url: 'https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=1200&q=80',
       title: 'بروتوكول الضيافة الفاخرة واستقبال الضيوف',
-      tag: ' الضيافة'
+      tag: 'الضيافة'
     },
     {
       url: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80',
       title: 'تفاصيل الديكورات والهويات البصرية التفاعلية',
-      tag: ' الديكور'
+      tag: 'الديكور'
     },
     {
       url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=80',
       title: 'غرفة العمليات الميدانية وإدارة الحشود',
-      tag: ' التشغيل'
+      tag: 'التشغيل'
     }
   ];
 
@@ -125,7 +128,10 @@ export const WorksView: React.FC<WorksViewProps> = ({
       }
 
       // 3. Theatrical Stage Curtain & Scroll-Driven Image Slideshow
-      if (stageSectionRef.current && leftCurtainRef.current && rightCurtainRef.current) {
+      if (stageSectionRef.current) {
+        const leftTarget = window.innerWidth >= 640 ? leftCurtainRef.current : leftCurtainMobileRef.current;
+        const rightTarget = window.innerWidth >= 640 ? rightCurtainRef.current : rightCurtainMobileRef.current;
+
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: stageSectionRef.current,
@@ -148,19 +154,26 @@ export const WorksView: React.FC<WorksViewProps> = ({
           }
         });
 
-        tl.to(curtainTitleRef.current, { opacity: 0, scale: 0.9, y: -30, duration: 0.08 }, 0)
-          .to(leftCurtainRef.current, { xPercent: -100, ease: 'power2.inOut' }, 0.05)
-          .to(rightCurtainRef.current, { xPercent: 100, ease: 'power2.inOut' }, 0.05)
-          .fromTo(
-            stageContentRef.current,
-            { scale: 0.4, opacity: 0, z: -600 },
-            { scale: 1, opacity: 1, z: 0, ease: 'power3.out', duration: 0.3 },
-            0.1
-          )
-          .to(stageContentRef.current, { opacity: 1, duration: 0.4 }, 0.35)
-          .to(stageContentRef.current, { scale: 0.5, opacity: 0, duration: 0.15 }, 0.8)
-          .to(leftCurtainRef.current, { xPercent: 0, ease: 'power2.inOut' }, 0.85)
-          .to(rightCurtainRef.current, { xPercent: 0, ease: 'power2.inOut' }, 0.85);
+        tl.to(curtainTitleRef.current, { opacity: 0, scale: 0.9, y: -30, duration: 0.08 }, 0);
+        
+        if (leftTarget && rightTarget) {
+          tl.to(leftTarget, { xPercent: -100, ease: 'power2.inOut' }, 0.05)
+            .to(rightTarget, { xPercent: 100, ease: 'power2.inOut' }, 0.05);
+        }
+
+        tl.fromTo(
+          stageContentRef.current,
+          { scale: 0.4, opacity: 0, z: -600 },
+          { scale: 1, opacity: 1, z: 0, ease: 'power3.out', duration: 0.3 },
+          0.1
+        )
+        .to(stageContentRef.current, { opacity: 1, duration: 0.4 }, 0.35)
+        .to(stageContentRef.current, { scale: 0.5, opacity: 0, duration: 0.15 }, 0.8);
+
+        if (leftTarget && rightTarget) {
+          tl.to(leftTarget, { xPercent: 0, ease: 'power2.inOut' }, 0.85)
+            .to(rightTarget, { xPercent: 0, ease: 'power2.inOut' }, 0.85);
+        }
       }
     }, containerRef);
 
@@ -266,16 +279,34 @@ export const WorksView: React.FC<WorksViewProps> = ({
     openWhatsAppDirect(url);
   };
 
+  // إعدادات صور الديسكتوب (أفقي)
   const leftCurtainStyle = {
     backgroundImage: `url('/assets/img/right (2).jpeg')`,
     backgroundSize: 'cover',
-    backgroundPosition: 'center',
+    backgroundPosition: 'center center',
+    backgroundRepeat: 'no-repeat',
   };
 
   const rightCurtainStyle = {
     backgroundImage: `url('/assets/img/right (1).jpeg')`,
     backgroundSize: 'cover',
-    backgroundPosition: 'center',
+    backgroundPosition: 'center center',
+    backgroundRepeat: 'no-repeat',
+  };
+
+  // إعدادات صور الموبايل والتابلت (رأسي - يمكنك استبدال الرابط بصورة الموبايل الخاصة بكِ)
+  const leftCurtainMobileStyle = {
+    backgroundImage: `url('/assets/img/p9.png')`, 
+    backgroundSize: 'cover',
+    backgroundPosition: 'center center',
+    backgroundRepeat: 'no-repeat',
+  };
+
+  const rightCurtainMobileStyle = {
+    backgroundImage: `url('/assets/img/q9.png')`, 
+    backgroundSize: 'cover',
+    backgroundPosition: 'center center',
+    backgroundRepeat: 'no-repeat',
   };
 
   return (
@@ -291,7 +322,7 @@ export const WorksView: React.FC<WorksViewProps> = ({
           </h1>
 
           <p className="max-w-3xl mx-auto text-base sm:text-lg text-purple-100/90 leading-relaxed font-sans">
-          استكشف مجموعة من الفعاليات والتجارب  التي خططنا لها، صممنا تفاصيلها، وبدقة تشغيلية مطلقة أثرناها
+          استكشف مجموعة من الفعاليات والتجارب التي خططنا لها، صممنا تفاصيلها، وبدقة تشغيلية مطلقة أثرناها
           </p>
 
           <div 
@@ -315,25 +346,48 @@ export const WorksView: React.FC<WorksViewProps> = ({
         </div>
       </section>
 
-      {/* SECTION 2: CATEGORIES FILTER TABS */}
+      {/* SECTION 2: CATEGORIES FILTER (Responsive: Dropdown for Mobile, Pills for Desktop) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-12 relative z-30">
-        <div className="bg-white rounded-3xl p-4 sm:p-5 shadow-2xl border border-gray-100 flex items-center justify-start sm:justify-center overflow-x-auto gap-3 no-scrollbar">
-          {categories.map((cat) => {
-            const isActive = activeCategory === cat;
-            return (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-5 py-3 rounded-2xl text-xs sm:text-sm font-heading font-bold whitespace-nowrap transition-all duration-300 cursor-pointer ${
-                  isActive
-                    ? 'bg-[#3D295C] text-white shadow-lg shadow-[#3D295C]/40 scale-105'
-                    : 'bg-[#F8F7F4] text-gray-700 hover:bg-[#F2ECF7] hover:text-[#3D295C] border border-gray-200/80'
-                }`}
-              >
-                {cat}
-              </button>
-            );
-          })}
+        <div className="bg-white rounded-3xl p-5 shadow-2xl border border-gray-100">
+          
+          {/* Mobile Dropdown */}
+          <div className="block sm:hidden relative">
+            <select
+              value={activeCategory}
+              onChange={(e) => setActiveCategory(e.target.value)}
+              className="w-full py-3.5 px-5 bg-[#F8F7F4] border border-[#C59CE4]/30 rounded-2xl text-[#3D295C] font-heading font-bold text-sm outline-none appearance-none cursor-pointer shadow-sm focus:border-[#3D295C]"
+            >
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat === 'الكل' ? ' استعرض كافة الأقسام' : cat}
+                </option>
+              ))}
+            </select>
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-[#3D295C]">
+              <ChevronDown className="w-5 h-5" />
+            </div>
+          </div>
+
+          {/* Desktop Pills Tabs */}
+          <div className="hidden sm:flex items-center justify-center flex-wrap gap-2.5">
+            {categories.map((cat) => {
+              const isActive = activeCategory === cat;
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`px-5 py-2.5 rounded-2xl text-sm font-heading font-bold transition-all duration-300 cursor-pointer ${
+                    isActive
+                      ? 'bg-[#3D295C] text-white shadow-md shadow-[#3D295C]/30 scale-105'
+                      : 'bg-[#F8F7F4] text-gray-700 hover:bg-[#F2ECF7] hover:text-[#3D295C] border border-gray-200/80'
+                  }`}
+                >
+                  {cat}
+                </button>
+              );
+            })}
+          </div>
+
         </div>
       </section>
 
@@ -406,6 +460,7 @@ export const WorksView: React.FC<WorksViewProps> = ({
       {/* SECTION 4: TRUE THEATRICAL STAGE & SCROLL-DRIVEN FRAME CAROUSEL */}
       <section 
         ref={stageSectionRef} 
+        // تم استعادة اللون الأصلي هنا
         className="bg-[#F8F7F4] h-screen w-full relative overflow-hidden flex flex-col justify-center items-center m-0 p-0 border-0"
       >
         <div ref={curtainTitleRef} className="absolute top-[18vh] inset-x-0 z-40 text-center px-4">
@@ -471,26 +526,44 @@ export const WorksView: React.FC<WorksViewProps> = ({
           </div>
         </div>
 
-        {/* --- الستارة اليسار --- */}
+        {/* --- الستارة اليسار (موبايل وتابلت) --- */}
+        <div 
+          ref={leftCurtainMobileRef}
+          className="absolute inset-y-0 left-0 w-1/2 z-20 flex items-center justify-end overflow-hidden shadow-2xl block sm:hidden"
+          style={leftCurtainMobileStyle}
+        >
+          <div className="absolute inset-0 bg-[#180F29]/20"></div>
+        </div>
+
+        {/* --- الستارة اليسار (ديسكتوب) --- */}
         <div 
           ref={leftCurtainRef} 
-          className="absolute inset-y-0 left-0 w-1/2 z-20 flex items-center justify-end overflow-hidden shadow-2xl"
+          className="absolute inset-y-0 left-0 w-1/2 z-20 flex items-center justify-end overflow-hidden shadow-2xl hidden sm:flex"
           style={leftCurtainStyle}
         >
           <div className="absolute inset-0 bg-[#180F29]/20"></div>
         </div>
 
-        {/* --- الستارة اليمين --- */}
+        {/* --- الستارة اليمين (موبايل وتابلت) --- */}
+        <div 
+          ref={rightCurtainMobileRef}
+          className="absolute inset-y-0 right-0 w-1/2 z-20 flex items-center justify-start overflow-hidden shadow-2xl block sm:hidden"
+          style={rightCurtainMobileStyle}
+        >
+          <div className="absolute inset-0 bg-[#180F29]/20"></div>
+        </div>
+
+        {/* --- الستارة اليمين (ديسكتوب) --- */}
         <div 
           ref={rightCurtainRef} 
-          className="absolute inset-y-0 right-0 w-1/2 z-20 flex items-center justify-start overflow-hidden shadow-2xl"
+          className="absolute inset-y-0 right-0 w-1/2 z-20 flex items-center justify-start overflow-hidden shadow-2xl hidden sm:flex"
           style={rightCurtainStyle}
         >
           <div className="absolute inset-0 bg-[#180F29]/20"></div>
         </div>
       </section>
 
-      {/* SECTION 5: CTA (مقاس متناسق تماماً مع الهيدر وكارت غامق فاخر) */}
+      {/* SECTION 5: CTA */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-[#F8F7F4]">
         <div className="bg-[#180F29] rounded-[36px] p-8 sm:p-14 text-center text-white shadow-2xl relative overflow-hidden khuzama-pattern-dark border border-[#C59CE4]/30">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#C59CE4]/20 via-transparent to-transparent pointer-events-none"></div>

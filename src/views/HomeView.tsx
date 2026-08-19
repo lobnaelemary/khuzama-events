@@ -1,7 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { PageRoute, Project } from '../types';
 import { PROJECTS_DATA, SOLUTIONS_DATA, TESTIMONIALS_DATA } from '../data/mockData';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, animate } from 'framer-motion';
 import { TypewriterText, AuroraStarfield, Flip3DCard, FilmStripReel, InfiniteMarquee, PartnersCarousel3D } from '../components/CinematicElements';
 import { MessageCircle, Target, ChevronLeft, Eye, Footprints, Layers, ClipboardCheck, Palette, Video as VideoIcon, HeartHandshake, ShieldCheck } from 'lucide-react';
 
@@ -11,6 +11,31 @@ interface HomeViewProps {
   onOpenWhatsAppModal: (projectTitle?: string) => void;
 }
 
+// مكون عداد الأرقام الذكي
+const AnimatedCounter: React.FC<{ value: string }> = ({ value }) => {
+  const nodeRef = useRef<HTMLSpanElement>(null);
+  const numericVal = parseInt(value.replace(/[^0-9]/g, ''), 10) || 0;
+  const prefix = value.includes('+') ? '+' : '';
+  const suffix = value.replace(/[0-9+]/g, '');
+
+  useEffect(() => {
+    const node = nodeRef.current;
+    if (!node) return;
+
+    const controls = animate(0, numericVal, {
+      duration: 2.5,
+      ease: "easeOut",
+      onUpdate(value) {
+        node.textContent = prefix + Math.floor(value) + suffix;
+      }
+    });
+
+    return () => controls.stop();
+  }, [numericVal, prefix, suffix]);
+
+  return <span ref={nodeRef}>{prefix}0{suffix}</span>;
+};
+
 export const HomeView: React.FC<HomeViewProps> = ({
   onNavigate,
   onSelectProject,
@@ -19,22 +44,25 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
   // Stats Counters
   const stats = [
-    { value: '+10', label: 'سنوات من الخبرة الميدانية' },
-    { value: '+150', label: 'فعالية ومؤتمر مكتمل بنجاح' },
-    { value: '+14', label: 'مدينة ومنطقة جغرافية بالمملكة' },
-    { value: '+50 ألف', label: 'ضيف وزائر تمت خدمتهم' }
+    { value: '10+', label: 'سنوات من الخبرة الميدانية' },
+    { value: '150+', label: 'فعالية ومؤتمر مكتمل بنجاح' },
+    { value: '14+', label: 'مدينة ومنطقة جغرافية بالمملكة' },
+    { value: '50k+', label: 'ضيف وزائر تمت خدمتهم' }
   ];
 
-  // Client Logos / Entities ticker
+  // روابط اللوجوهات والأسماء الخاصة بالشركات
   const clientLogos = [
-    'وزارة الثقافة',
-    'هيئة الاتصالات والتقنية',
-    'مجموعة النخبة العقارية',
-    'شركة نيوم الصناعية',
-    'أرامكو السعودية',
-    'موسم الرياض',
-    'هيئة الترفيه والسياحة',
-    'مؤتمر التقنية المستقبلية'
+    { name: 'أرامكو السعودية', logo: '/assets/img/logos/Agricultural Development Fund 2.png' },
+    { name: 'شركة نيوم الصناعية', logo: '/assets/img/logos/General Authority for Competition 2.png' },
+    { name: 'مجموعة النخبة العقارية', logo: '/assets/img/logos/Institute of Public Administration (1) 2.png' },
+    { name: 'هيئة الاتصالات والتقنية', logo: '/assets/img/logos/King saud bin abdulaziz university for health sciences 2.png' },
+    { name: 'وزارة الثقافة', logo: '/assets/img/logos/Kingdom of Saudi Arabia Public Prosecution (1) 2.png' },
+    { name: 'مؤتمر التقنية المستقبلية', logo: '/assets/img/logos/logov1 2.png' },
+    { name: 'هيئة الترفيه والسياحة', logo: '/assets/img/logos/Ministry of Defense 2.png' },
+    { name: 'موسم الرياض', logo: '/assets/img/logos/NDU_logo 2.png' },
+    {name: 'مؤتمر التقنية المستقبلية', logo: '/assets/img/logos/Premium Residency-02 2.png' },
+    {name: 'موسم الرياض', logo: '/assets/img/logos/Saudi Bar Association 2.png' },
+    {name: 'موسم الرياض', logo: '/assets/img/logos/Technical andd vocational training corporation 2.png' },
   ];
 
   const philosophyRef = useRef<HTMLDivElement>(null);
@@ -75,11 +103,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
             initial={{ opacity: 0, y: 35, rotateX: 12 }}
             animate={{ opacity: 1, y: 0, rotateX: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="font-thamanya font-black text-3xl sm:text-6xl lg:text-7xl text-white leading-tight pt-2"
+            className="font-thamanya font-black text-3xl sm:text-6xl lg:text-7xl text-white leading-[1.3] pt-2"
           >
-            من أول تصور... <br className="hidden sm:inline" />
-            <span className="text-gradient-liquid">
-              إلى <TypewriterText words={['آخر ضيف.', 'أرقى حضور.', 'أبهر نتيجة.', 'أثر يخلد.']} />
+            <span className="block">من أول تصور...</span>
+            <span className="block mt-2">
+              إلى <span className="text-gradient-liquid"><TypewriterText words={['آخر ضيف.', 'أرقى حضور.', 'أبهر نتيجة.', 'أثر يخلد.']} /></span>
             </span>
           </motion.h1>
 
@@ -126,7 +154,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       {/* INFINITE MARQUEE TICKER */}
       <InfiniteMarquee items={clientLogos} />
 
-      {/* SECTION 2: TRUST BAR & METRICS (الحركة المحبوبة مستعادة هنا ببراعة) */}
+      {/* SECTION 2: TRUST BAR & METRICS */}
       <motion.section
         initial={{ opacity: 0, y: 50, rotateX: 6 }}
         whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
@@ -152,7 +180,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 className="khuzama-glass-neon p-6 rounded-3xl border border-[#C59CE4]/30 space-y-2 hover:border-[#C59CE4] hover:shadow-[0_10px_30px_rgba(197,156,228,0.15)] transition-all duration-300 shadow-xl"
               >
                 <div className="font-thamanya font-black text-3xl sm:text-4xl text-gradient-liquid">
-                  {st.value}
+                  <AnimatedCounter value={st.value} />
                 </div>
                 <div className="text-xs sm:text-sm text-white/80 font-semibold font-sans">
                   {st.label}
@@ -328,7 +356,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       </motion.section>
 
-      {/* SECTION 6: قصة خزامى ومدخل من نحن (مع إطار زهرة الخزامى المتحركة) */}
+      {/* SECTION 6: قصة خزامى ومدخل من نحن */}
       <section className="relative bg-gradient-to-b from-[#180F29] via-[#231738] to-[#180F29] text-white py-28 px-4 sm:px-6 lg:px-8 border-y border-[#C59CE4]/20 overflow-hidden khuzama-pattern-dark">
         <div className="absolute inset-0 bg-radial-glow opacity-50 pointer-events-none"></div>
 
@@ -426,7 +454,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       </section>
 
-      {/* SECTION 7: PARTNERS IN SUCCESS */}
+      {/* SECTION 7: PARTNERS IN SUCCESS (السكشن الأصلي بـ 3D Carousel تماماً كما طلبتِ) */}
       <section className="relative w-full py-28 px-4 overflow-hidden flex flex-col items-center justify-center bg-[#F8F7F4] border-y border-gray-200">
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-16 relative z-10 flex flex-col items-center justify-center">
           <span className="inline-block text-xs font-bold text-[#3D295C] bg-[#F0E6F7] px-3.5 py-1 rounded-full border border-[#C59CE4]/30 font-heading w-fit">
