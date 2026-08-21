@@ -36,14 +36,7 @@ export const KhuzamaLogo: React.FC<KhuzamaLogoProps> = ({
         />
       </div>
 
-      {/* Brand Typography */}
-      <div className="flex flex-col text-right">
-        <div className="flex items-baseline gap-2">
-          
-          
-        </div>
-        
-      </div>
+      
     </div>
   );
 };

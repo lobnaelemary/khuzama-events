@@ -129,8 +129,9 @@ export const WorksView: React.FC<WorksViewProps> = ({
 
       // 3. Theatrical Stage Curtain & Scroll-Driven Image Slideshow
       if (stageSectionRef.current) {
-        const leftTarget = window.innerWidth >= 640 ? leftCurtainRef.current : leftCurtainMobileRef.current;
-        const rightTarget = window.innerWidth >= 640 ? rightCurtainRef.current : rightCurtainMobileRef.current;
+        const isMobileOrTablet = window.innerWidth < 1024;
+        const leftTarget = isMobileOrTablet ? leftCurtainMobileRef.current : leftCurtainRef.current;
+        const rightTarget = isMobileOrTablet ? rightCurtainMobileRef.current : rightCurtainRef.current;
 
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -294,17 +295,18 @@ export const WorksView: React.FC<WorksViewProps> = ({
     backgroundRepeat: 'no-repeat',
   };
 
-  // إعدادات صور الموبايل والتابلت (رأسي - يمكنك استبدال الرابط بصورة الموبايل الخاصة بكِ)
+  // إعدادات صور الموبايل والتابلت (رأسي - اليمين واليسار)
+  // تعديل إعدادات الموبايل لتملى الشاشة بالكامل وبدون أي فراغات فوق وتحت
   const leftCurtainMobileStyle = {
-    backgroundImage: `url('/assets/img/p9.png')`, 
-    backgroundSize: 'cover',
+    backgroundImage: `url('/assets/img/left.png')`, 
+    backgroundSize: '100% 100%', // بتملى المساحة بالكامل طول وعرض وبدون فراغات
     backgroundPosition: 'center center',
     backgroundRepeat: 'no-repeat',
   };
 
   const rightCurtainMobileStyle = {
-    backgroundImage: `url('/assets/img/q9.png')`, 
-    backgroundSize: 'cover',
+    backgroundImage: `url('/assets/img/right side mob.png')`, 
+    backgroundSize: '100% 100%', // بتملى المساحة بالكامل طول وعرض وبدون فراغات
     backgroundPosition: 'center center',
     backgroundRepeat: 'no-repeat',
   };
@@ -460,7 +462,6 @@ export const WorksView: React.FC<WorksViewProps> = ({
       {/* SECTION 4: TRUE THEATRICAL STAGE & SCROLL-DRIVEN FRAME CAROUSEL */}
       <section 
         ref={stageSectionRef} 
-        // تم استعادة اللون الأصلي هنا
         className="bg-[#F8F7F4] h-screen w-full relative overflow-hidden flex flex-col justify-center items-center m-0 p-0 border-0"
       >
         <div ref={curtainTitleRef} className="absolute top-[18vh] inset-x-0 z-40 text-center px-4">
@@ -526,37 +527,37 @@ export const WorksView: React.FC<WorksViewProps> = ({
           </div>
         </div>
 
-        {/* --- الستارة اليسار (موبايل وتابلت) --- */}
+        {/* --- الستارة اليسار (تظهر في الموبايل والتابلت عبر max-lg:block) --- */}
         <div 
           ref={leftCurtainMobileRef}
-          className="absolute inset-y-0 left-0 w-1/2 z-20 flex items-center justify-end overflow-hidden shadow-2xl block sm:hidden"
+          className="absolute inset-y-0 left-0 w-1/2 z-20 flex items-center justify-end overflow-hidden shadow-2xl block lg:hidden"
           style={leftCurtainMobileStyle}
         >
           <div className="absolute inset-0 bg-[#180F29]/20"></div>
         </div>
 
-        {/* --- الستارة اليسار (ديسكتوب) --- */}
+        {/* --- الستارة اليسار (تظهر في الديسكتوب عبر hidden lg:flex) --- */}
         <div 
           ref={leftCurtainRef} 
-          className="absolute inset-y-0 left-0 w-1/2 z-20 flex items-center justify-end overflow-hidden shadow-2xl hidden sm:flex"
+          className="absolute inset-y-0 left-0 w-1/2 z-20 flex items-center justify-end overflow-hidden shadow-2xl hidden lg:flex"
           style={leftCurtainStyle}
         >
           <div className="absolute inset-0 bg-[#180F29]/20"></div>
         </div>
 
-        {/* --- الستارة اليمين (موبايل وتابلت) --- */}
+        {/* --- الستارة اليمين (تظهر في الموبايل والتابلت عبر max-lg:block) --- */}
         <div 
           ref={rightCurtainMobileRef}
-          className="absolute inset-y-0 right-0 w-1/2 z-20 flex items-center justify-start overflow-hidden shadow-2xl block sm:hidden"
+          className="absolute inset-y-0 right-0 w-1/2 z-20 flex items-center justify-start overflow-hidden shadow-2xl block lg:hidden"
           style={rightCurtainMobileStyle}
         >
           <div className="absolute inset-0 bg-[#180F29]/20"></div>
         </div>
 
-        {/* --- الستارة اليمين (ديسكتوب) --- */}
+        {/* --- الستارة اليمين (تظهر في الديسكتوب عبر hidden lg:flex) --- */}
         <div 
           ref={rightCurtainRef} 
-          className="absolute inset-y-0 right-0 w-1/2 z-20 flex items-center justify-start overflow-hidden shadow-2xl hidden sm:flex"
+          className="absolute inset-y-0 right-0 w-1/2 z-20 flex items-center justify-start overflow-hidden shadow-2xl hidden lg:flex"
           style={rightCurtainStyle}
         >
           <div className="absolute inset-0 bg-[#180F29]/20"></div>

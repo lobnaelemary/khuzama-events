@@ -59,7 +59,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeRoute, onNavigate, onOpenW
         </button>
 
         <button onClick={() => handleNavClick('home')} className="flex items-center focus:outline-none cursor-pointer">
-          <KhuzamaLogo variant="white" size="sm" />
+          <KhuzamaLogo variant="white" size="md" />
         </button>
 
         <nav className="hidden lg:flex items-center gap-1 bg-black/30 border border-white/10 rounded-full px-3 py-1">
