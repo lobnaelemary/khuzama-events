@@ -4,6 +4,7 @@ import { Sparkles, Camera, Film, ChevronLeft, ChevronRight, MessageCircle, Star 
 import { Project } from '../types';
 
 /* 1. Typewriter Effect Component */
+/* 1. Typewriter Effect Component */
 interface TypewriterTextProps {
   words: string[];
   className?: string;
@@ -37,7 +38,14 @@ export const TypewriterText: React.FC<TypewriterTextProps> = ({ words, className
   }, [currentText, isDeleting, currentWordIndex, words]);
 
   return (
-    <span className={`inline-block font-thamanya ${className}`}>
+    <span 
+      className={`font-thamanya ${className}`}
+      style={{
+        WebkitTransform: 'translateZ(0)',
+        transform: 'translateZ(0)',
+        willChange: 'opacity'
+      }}
+    >
       {currentText}
       <span className="animate-pulse text-[#C59CE4] inline-block font-extrabold mr-1">|</span>
     </span>
